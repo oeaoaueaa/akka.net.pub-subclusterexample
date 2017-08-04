@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Akka.Actor;
 using Akka.Cluster.Tools.PublishSubscribe;
 using Messages;
@@ -30,6 +31,9 @@ namespace Subscriber.Actors
             Receive<WorkitemMessage>(wim =>
             {
                 Console.WriteLine($"<< {wim.Message}");
+                Console.WriteLine($"Path {Self.Path}");
+
+                Sender.Tell($"***{wim.Message}***");
             });
         }
     }

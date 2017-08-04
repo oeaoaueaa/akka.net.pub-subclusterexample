@@ -2,6 +2,7 @@
 using System.Configuration;
 using Akka.Actor;
 using Akka.Configuration.Hocon;
+using Akka.Routing;
 
 namespace Publisher
 {
@@ -12,7 +13,7 @@ namespace Publisher
             var akkaConfigSection = ((AkkaConfigurationSection)ConfigurationManager.GetSection("akka")).AkkaConfig;
             var actorSystem = ActorSystem.Create("pubsubtest", akkaConfigSection);
 
-            var publisher = actorSystem.ActorOf(Props.Create(() => new Actors.Publisher()), "publisher");
+            var publisher = actorSystem.ActorOf(Props.Create(() => new Actors.Publisher()).WithRouter(FromConfig.Instance), "publisher");
 
             Console.WriteLine("press [q] to exit");
             string message;

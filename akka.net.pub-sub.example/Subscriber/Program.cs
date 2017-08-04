@@ -2,6 +2,7 @@
 using System.Configuration;
 using Akka.Actor;
 using Akka.Configuration.Hocon;
+using Akka.Routing;
 
 namespace Subscriber
 {
@@ -12,7 +13,7 @@ namespace Subscriber
             var akkaConfigSection = ((AkkaConfigurationSection)ConfigurationManager.GetSection("akka")).AkkaConfig;
             var actorSystem = ActorSystem.Create("pubsubtest", akkaConfigSection);
 
-            var subscribers = actorSystem.ActorOf(Props.Create(() => new Actors.Subscriber()), "subscriber");
+            var subscribers = actorSystem.ActorOf(Props.Create(() => new Actors.Subscriber()).WithRouter(FromConfig.Instance), "subscriber");
 
             Console.ReadLine();
         }
